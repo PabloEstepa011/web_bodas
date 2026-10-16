@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pantalla · Misión Secreta de Boda</title>
+  <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400&family=Great+Vibes&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root { --gold: #D9B77E; --ink: #0f0d0b; --cream: #F6EFE4; --sage: #7D8F69; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    [hidden] { display: none !important; }
+    html, body { height: 100%; background: var(--ink); color: var(--cream); font-family: "Jost", system-ui, sans-serif; overflow: hidden; cursor: none; }
+    body.show-cursor { cursor: default; }
+
+    .stage { position: fixed; inset: 0; }
+    .slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1.6s ease; }
+    .slide.on { opacity: 1; }
+    .slide .bg { position: absolute; inset: -40px; background-size: cover; background-position: center; filter: blur(40px) brightness(.45) saturate(1.2); transform: scale(1.1); }
+    .slide .photo { position: absolute; inset: 4vh 4vw 13vh; display: grid; place-items: center; }
+    .slide img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 10px; box-shadow: 0 30px 90px rgba(0,0,0,.6); }
+    .slide.on img { animation: kenburns 9s ease-out forwards; }
+    @keyframes kenburns { from { transform: scale(1); } to { transform: scale(1.045); } }
+
+    .caption {
+      position: fixed; left: 4vw; bottom: 3.6vh; z-index: 5;
+      display: flex; align-items: baseline; gap: 1.2vw;
+      transition: opacity .8s; max-width: 60vw;
+    }
+    .caption .who { font-family: "Cormorant Garamond", serif; font-size: clamp(22px, 2.6vw, 52px); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .caption .what { font-size: clamp(13px, 1.2vw, 22px); opacity: .7; letter-spacing: .05em; white-space: nowrap; }
+    .badge { position: fixed; left: 4vw; top: 4vh; z-index: 5; background: var(--gold); color: var(--ink); font-weight: 500; font-size: clamp(12px, 1vw, 18px); letter-spacing: .2em; text-transform: uppercase; padding: .5em 1.1em; border-radius: 999px; opacity: 0; transform: translateY(-10px); transition: .6s; }
+    .badge.on { opacity: 1; transform: none; }
+
+    .brand { position: fixed; right: 4vw; top: 3.4vh; z-index: 5; text-align: right; text-shadow: 0 2px 20px rgba(0,0,0,.5); }
+    .brand .names { font-family: "Great Vibes", cursive; font-size: clamp(28px, 3.4vw, 64px); line-height: 1; }
+    .brand .tag { font-family: "Cormorant Garamond", serif; font-style: italic; color: var(--gold); font-size: clamp(14px, 1.4vw, 26px); }
+
+    .qr-card { position: fixed; right: 4vw; bottom: 3.6vh; z-index: 5; display: flex; align-items: center; gap: 1.2vw; background: rgba(246,239,228,.95); color: var(--ink); padding: 1vw; border-radius: 1.2vw; box-shadow: 0 20px 60px rgba(0,0,0,.4); }
+    .qr-card .qr { width: clamp(80px, 8vw, 170px); aspect-ratio: 1; }
+    .qr-card .qr svg { width: 100%; height: 100%; display: block; }
+    .qr-card p { font-family: "Cormorant Garamond", serif; font-size: clamp(16px, 1.5vw, 30px); line-height: 1.1; font-weight: 600; max-width: 11em; }
+    .qr-card small { display: block; font-family: "Jost", sans-serif; font-weight: 400; font-size: .5em; letter-spacing: .15em; text-transform: uppercase; opacity: .6; margin-top: .5em; }
+
+    .empty { position: fixed; inset: 0; display: grid; place-items: center; text-align: center; background: radial-gradient(circle at 50% 30%, #2a2420, var(--ink) 70%); }
+    .empty .names { font-family: "Great Vibes", cursive; font-size: clamp(60px, 9vw, 180px); line-height: 1; }
+    .empty .tag { font-family: "Cormorant Garamond", serif; font-style: italic; color: var(--gold); font-size: clamp(20px, 2.2vw, 40px); margin: .6em 0 1.4em; }
+    .empty .qr { width: clamp(180px, 22vw, 380px); aspect-ratio: 1; margin: 0 auto; background: var(--cream); padding: 1.4vw; border-radius: 1.4vw; }
+    .empty .qr svg { width: 100%; height: 100%; display: block; }
+    .empty p.hint { margin-top: 1.2em; font-size: clamp(16px, 1.5vw, 28px); letter-spacing: .1em; opacity: .85; }
+
+    .help { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10; background: rgba(0,0,0,.75); padding: 18px 26px; border-radius: 14px; font-size: 15px; opacity: 0; transition: opacity .4s; pointer-events: none; text-align: center; }
+    .help.on { opacity: 1; }
+    .count { position: fixed; left: 50%; bottom: 1.2vh; transform: translateX(-50%); font-size: 12px; opacity: .35; letter-spacing: .15em; z-index: 5; }
+  </style>
+</head>
+<body>
+  <div class="stage" id="stage"></div>
+
+  <div class="empty" id="empty">
+    <div>
+      <div class="names" id="e-names"></div>
+      <div class="tag" id="e-tag"></div>
+      <div class="qr" id="e-qr"></div>
+      <p class="hint">Escanea, completa los retos y sube tus fotos</p>
+    </div>
+  </div>
+
+  <div class="badge" id="badge">✨ Nueva foto</div>
+  <div class="caption" id="caption"><span class="who" id="who"></span><span class="what" id="what"></span></div>
+  <div class="brand" id="brand"><div class="names" id="b-names"></div><div class="tag" id="b-tag"></div></div>
+  <div class="qr-card" id="qr-card" hidden>
+    <div class="qr" id="qr"></div>
+    <p>¡Sube tus fotos!<small>Escanea con el móvil</small></p>
+  </div>
+  <div class="count" id="count"></div>
+  <div class="help" id="help">Pulsa en cualquier sitio para pantalla completa<br>← → para cambiar de foto</div>
+
+  <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
+  <script src="js/config.js?v=2"></script>
+  <script src="js/cloud.js?v=2"></script>
+  <script src="js/shared.js?v=2"></script>
+  <script>
+  (function () {
+    const cfg = window.BODA;
+    const $ = (s) => document.querySelector(s);
+    const retoById = Object.fromEntries((cfg.retos || []).map((r) => [r.id, r]));
+    const SLIDE_MS = 8000, REFRESH_MS = 20000;
+
+    const names = `${cfg.novio1} & ${cfg.novio2}`;
+    $("#e-names").textContent = $("#b-names").textContent = names;
+    $("#e-tag").textContent = $("#b-tag").textContent = cfg.hashtag || "";
+    const qr = BodaShared.qrSvg(BodaShared.guestUrl());
+    $("#e-qr").innerHTML = $("#qr").innerHTML = qr;
+    document.title = `Pantalla · ${names}`;
+
+    let photos = [];          // todas, de más nueva a más antigua
+    const seen = new Set();   // ids ya conocidos
+    const fresh = [];         // nuevas pendientes de mostrar primero
+    let order = [], pos = 0, timer = null, current = null;
+    const shown = [];         // historial para volver atrás
+
+    async function refresh() {
+      try {
+        const list = await Cloud.list();
+        const firstLoad = seen.size === 0;
+        list.forEach((p) => {
+          if (!seen.has(p.id)) {
+            seen.add(p.id);
+            if (!firstLoad) fresh.push(p);
+          }
+        });
+        photos = list;
+        $("#count").textContent = photos.length ? `${photos.length} fotos` : "";
+        if (photos.length && !current) next();
+      } catch (e) { console.warn(e); }
+      $("#empty").hidden = photos.length > 0;
+      $("#qr-card").hidden = photos.length === 0;
+      $("#brand").hidden = $("#caption").hidden = photos.length === 0;
+    }
+
+    function shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+
+    function pick() {
+      if (fresh.length) return { p: fresh.shift(), isNew: true };
+      if (pos >= order.length) {
+        // reparto: las 15 más recientes salen más a menudo
+        order = shuffle([...photos, ...photos.slice(0, 15)]);
+        pos = 0;
+      }
+      let p = order[pos++];
+      if (current && p && p.id === current.id && photos.length > 1) p = order[pos++] || photos[0];
+      return { p: p || photos[0], isNew: false };
+    }
+
+    function next(manual) {
+      clearTimeout(timer);
+      if (!photos.length) { timer = setTimeout(next, SLIDE_MS); return; }
+      const { p, isNew } = manual === -1 && shown.length > 1 ? (shown.pop(), { p: shown.pop(), isNew: false }) : pick();
+      show(p, isNew);
+      timer = setTimeout(next, SLIDE_MS);
+    }
+
+    function show(p, isNew) {
+      if (!p) return;
+      const img = new Image();
+      img.onload = () => {
+        current = p;
+        shown.push(p); if (shown.length > 50) shown.shift();
+        const slide = document.createElement("div");
+        slide.className = "slide";
+        const bg = document.createElement("div"); bg.className = "bg"; bg.style.backgroundImage = `url("${p.thumb}")`;
+        const wrap = document.createElement("div"); wrap.className = "photo";
+        wrap.append(img);
+        slide.append(bg, wrap);
+        const stage = $("#stage");
+        stage.append(slide);
+        requestAnimationFrame(() => requestAnimationFrame(() => slide.classList.add("on")));
+        [...stage.children].slice(0, -1).forEach((old) => { old.classList.remove("on"); setTimeout(() => old.remove(), 1800); });
+
+        $("#who").textContent = p.guest || "";
+        const r = retoById[p.reto];
+        $("#what").textContent = r ? `${r.emoji || ""} ${r.titulo}` : "";
+        $("#badge").classList.toggle("on", isNew);
+      };
+      img.onerror = () => { timer = setTimeout(next, 500); };
+      img.src = p.slide || p.url;
+    }
+
+    // Controles
+    let helpT;
+    function flashHelp() { $("#help").classList.add("on"); document.body.classList.add("show-cursor"); clearTimeout(helpT); helpT = setTimeout(() => { $("#help").classList.remove("on"); document.body.classList.remove("show-cursor"); }, 2500); }
+    document.addEventListener("mousemove", flashHelp);
+    document.addEventListener("click", () => {
+      if (!document.fullscreenElement) document.documentElement.requestFullscreen?.().catch(() => {});
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowRight" || e.key === " ") next();
+      if (e.key === "ArrowLeft") next(-1);
+      if (e.key.toLowerCase() === "f") document.documentElement.requestFullscreen?.();
+    });
+
+    // Evita que la pantalla se apague
+    async function keepAwake() { try { await navigator.wakeLock?.request("screen"); } catch {} }
+    keepAwake();
+    document.addEventListener("visibilitychange", () => document.visibilityState === "visible" && keepAwake());
+
+    flashHelp();
+    refresh();
+    setInterval(refresh, REFRESH_MS);
+  })();
+  </script>
+</body>
+</html>
