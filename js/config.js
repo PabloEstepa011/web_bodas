@@ -19,14 +19,14 @@ window.BODA = {
 
   // Dirección pública de la web (se usa en el código QR).
   // Si se deja vacío se detecta automáticamente.
-  urlWeb: "",
+  urlWeb: "https://pabloestepa011.github.io/web_bodas/",
 
   // --- Nube de fotos (Cloudinary, gratis) ---------------------------
   // Si cloudName está vacío la web funciona en "modo demo"
   // (las fotos solo se ven en tu móvil y no se guardan).
   cloudinary: {
-    cloudName: "",        // p. ej. "dxyz123ab"
-    uploadPreset: "",     // p. ej. "boda_invitados" (tipo Unsigned)
+    cloudName: "qanrnlz9",
+    uploadPreset: "boda_invitados", // preset de tipo Unsigned
     etiqueta: "boda",     // etiqueta común de todas las fotos (solo letras, números y guiones)
   },
 
