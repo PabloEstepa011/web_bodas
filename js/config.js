@@ -7,15 +7,16 @@
 
 window.BODA = {
   // --- Los novios ---------------------------------------------------
-  novio1: "Laura",
-  novio2: "Javier",
+  novio1: "Aurora",
+  novio2: "Mariano",
 
-  // Fecha y hora de la ceremonia (formato AAAA-MM-DDTHH:MM)
-  fecha: "2026-11-21T17:00",
-  lugar: "Finca El Olivar · Córdoba",
+  // Fecha de la boda (formato AAAA-MM-DDTHH:MM). Se usa para la cuenta atrás.
+  fecha: "2026-10-24T12:00",
+  mostrarFecha: false,   // true = enseña la fecha escrita en la portada
+  lugar: "",             // déjalo vacío para no mostrarlo
 
   // Hashtag que aparece en la web y en la pantalla
-  hashtag: "#LauraYJavier2026",
+  hashtag: "#AuroraYMariano2026",
 
   // Dirección pública de la web (se usa en el código QR).
   // Si se deja vacío se detecta automáticamente.
@@ -33,17 +34,20 @@ window.BODA = {
   // --- Las misiones -------------------------------------------------
   // Añade, quita o cambia retos. El "id" debe ser único y sin espacios.
   retos: [
-    { id: "selfie-novios",   emoji: "🤳", titulo: "Selfie con los novios",          descripcion: "Encuentra a los novios y hazte un selfie con ellos. ¡Sonrisa obligatoria!" },
-    { id: "brindis",         emoji: "🥂", titulo: "El brindis más divertido",        descripcion: "Captura el momento exacto del brindis con la mejor actitud." },
-    { id: "desconocido",     emoji: "🤝", titulo: "Nuevo amigo",                     descripcion: "Foto con alguien a quien no conocías antes de hoy." },
-    { id: "abuelos",         emoji: "👵", titulo: "Sabiduría",                       descripcion: "Una foto con el invitado o invitada de más edad de la boda." },
-    { id: "baile",           emoji: "💃", titulo: "Rey o reina de la pista",          descripcion: "Pilla a alguien en pleno paso de baile legendario." },
-    { id: "zapatos",         emoji: "👠", titulo: "Zapatos fuera",                   descripcion: "Los primeros zapatos abandonados de la noche." },
-    { id: "detalle",         emoji: "🌿", titulo: "Ojo de fotógrafo",                descripcion: "El detalle de la decoración que más te haya gustado." },
-    { id: "mesa",            emoji: "🍽️", titulo: "La mesa más loca",                descripcion: "Toda tu mesa en una sola foto haciendo la pose más original." },
-    { id: "lagrima",         emoji: "🥹", titulo: "Momento emoción",                 descripcion: "Alguien emocionado. Discreción, por favor… pero que se vea." },
-    { id: "salto",           emoji: "🦘", titulo: "¡Todos arriba!",                  descripcion: "Un grupo saltando a la vez. Puntos extra si nadie sale borroso." },
-    { id: "imitacion",       emoji: "🎭", titulo: "Imitadores",                      descripcion: "Imita con alguien una pose típica de los novios." },
-    { id: "tarta",           emoji: "🎂", titulo: "Dulce final",                     descripcion: "La tarta… o alguien disfrutándola demasiado." },
+    { id: "selfie-novios",   emoji: "🤳", titulo: "Selfie con los novios",        descripcion: "Consigue una foto sonriendo junto a los recién casados." },
+    { id: "brindis",         emoji: "🥂", titulo: "El brindis más divertido",      descripcion: "Captura el momento exacto del brindis con la mejor actitud y energía." },
+    { id: "abuelos-pista",   emoji: "👵", titulo: "Los abuelos en la pista",       descripcion: "Inmortaliza a los abuelos (o a la pareja más veterana) dándolo todo bailando." },
+    { id: "abrazo-sorpresa", emoji: "🤗", titulo: "Abrazo sorpresa",               descripcion: "Hazle una foto a alguien recibiendo un abrazo inesperado y emotivo." },
+    { id: "look",            emoji: "👠", titulo: "El look de la noche",           descripcion: "Fotografía el detalle de vestuario o accesorio más original de la fiesta (unos zapatos locos, unos gemelos divertidos, un tocado...)." },
+    { id: "lagrimas",        emoji: "🥹", titulo: "Lágrimas de felicidad",         descripcion: "Captura una sonrisa tan intensa que parezca que van a llover lágrimas de emoción." },
+    { id: "mesa-animada",    emoji: "🍽️", titulo: "La mesa más animada",           descripcion: "Retrata a un grupo disfrutando de la cena o el aperitivo riendo a carcajadas." },
+    { id: "duelo-baile",     emoji: "🕺", titulo: "Duelo en la pista de baile",    descripcion: "Una foto de los pasos de baile más locos o divertidos de la noche." },
+    { id: "momento-dulce",   emoji: "🎂", titulo: "El momento dulce",              descripcion: "Fotografía el instante en que alguien le hinca el diente a un postre, tarta o chuche con cara de felicidad." },
+    { id: "amigos",          emoji: "👯", titulo: "Amigos de toda la vida",        descripcion: "Una foto de un grupo de amigos de la infancia o la universidad recordando anécdotas." },
+    { id: "beso-robado",     emoji: "💋", titulo: "Beso robado",                   descripcion: "Fotografía un beso espontáneo entre cualquier pareja de invitados que se quiera mucho." },
+    { id: "peques",          emoji: "🧸", titulo: "Los peques de la boda",         descripcion: "Captura alguna travesura, baile o momento tierno de los niños invitados." },
+    { id: "ramo",            emoji: "💐", titulo: "El momento del ramo",           descripcion: "Captura la tensión, los saltos y las risas justo en el aire antes de que alguien atrape el ramo o la liga." },
+    { id: "alma-fiesta",     emoji: "🎉", titulo: "El alma de la fiesta",          descripcion: "Retrata a esa persona que no ha pisado una silla en toda la noche y está animando a todo el mundo." },
+    { id: "ultima-foto",     emoji: "🌙", titulo: "La última foto de la noche",    descripcion: "Una selfie grupal con los que queden al pie del cañón cerrando la fiesta." },
   ],
 };

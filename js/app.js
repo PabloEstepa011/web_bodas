@@ -24,6 +24,8 @@
   if (!Cloud.configured) $("#demo-banner").hidden = false;
 
   const weddingDate = new Date(cfg.fecha);
+  $("#hero-date").hidden = !cfg.mostrarFecha;
+  $(".hero .place").hidden = !cfg.lugar;
   if (!isNaN(weddingDate)) {
     const f = (o) => new Intl.DateTimeFormat("es-ES", o).format(weddingDate);
     $("#hero-date").textContent = `${f({ day: "numeric" })} · ${f({ month: "long" })} · ${f({ year: "numeric" })}`;
